@@ -83,6 +83,24 @@ function sjc_order_change() {
 add_action("wp_ajax_sjc_order_change", "sjc_order_change");
 add_action("wp_ajax_nopriv_sjc_order_change", "sjc_order_change");
 
+function sjc_order_clear() {
+    global $wpdb;
+
+    $resp = array('success' => true);
+
+    $result = $wpdb->delete(TB_NAME, ['post_id' => $_POST['post_id']]);
+    if(!$result) {
+        $resp['success'] = false;
+        $resp['message'] = 'Delete row is failed!';
+    }
+
+    echo json_encode($resp);
+    die();
+}
+
+add_action("wp_ajax_sjc_order_clear", "sjc_order_clear");
+add_action("wp_ajax_nopriv_sjc_order_clear", "sjc_order_clear");
+
 function sjc_table_overwrite() {
     global $wpdb;
 
@@ -177,7 +195,7 @@ function sjc_page() {
                         <td><a target="_blank" href="<?php echo get_permalink($slide->post_id)?>"><?php echo get_the_title($slide->post_id)?></a></td>
                         <td>
                             <div class="d-flex order-input-wrap" id="<?php echo $slide->post_id ?>">
-                                <input type="text" class="border form-control w-25" value="<?php echo $slide->slide_order?>"><span class="btn btn-primary ms-3 d-inline btn-order-change">Change</span>
+                                <input type="text" class="border form-control w-25" value="<?php echo $slide->slide_order?>"><span class="btn btn-primary ms-3 d-inline btn-order-change">Change</span><span class="btn btn-danger ms-3 d-inline btn-order-clear">Remove</span>
                             </div>
                         </td>
                     </tr>

@@ -76,5 +76,28 @@
                 }
             })
         })
+
+        $(document).on('click', '.btn-order-clear', function() {
+            var order_input_wrap = $(this).parents('.order-input-wrap');
+
+            $.ajax({
+                url: ajax_url,
+                type: 'post',
+                data: {
+                    action: 'sjc_order_clear',
+                    post_id: $(order_input_wrap).attr('id')
+                },
+                dataType: 'json',
+                success: function(resp) {
+                    if(!resp.success) {
+                        alert(resp.message);
+                    }
+                    else {
+                        alert('Success Removed');
+                        location.reload();
+                    }
+                }
+            })
+        })
     })
 })(jQuery)
